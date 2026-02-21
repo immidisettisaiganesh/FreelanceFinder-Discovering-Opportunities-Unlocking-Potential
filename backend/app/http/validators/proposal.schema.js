@@ -1,0 +1,23 @@
+const createError = require("http-errors");
+const Joi = require("joi");
+const { MongoIDPattern } = require("../../../utils/constants");
+
+const addProposalSchema = Joi.object({
+  description: Joi.string()
+    .required()
+    .error(createError.BadRequest("The sent description is not valid.")),
+  price: Joi.number().error(
+    createError.BadRequest("The entered price is not valid.")
+  ),
+  duration: Joi.number()
+    .required()
+    .error(createError.BadRequest("Enter the project completion time.")),
+  projectId: Joi.string()
+    .required()
+    .regex(MongoIDPattern)
+    .error(createError.BadRequest("The entered project ID is not valid.")),
+});
+
+module.exports = {
+  addProposalSchema,
+};
